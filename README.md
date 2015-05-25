@@ -11,8 +11,10 @@
 
 ＃0x01 成员担当
 
-戮  IV JAVA
+糖果  IV JAVA
 
 左懶  VI OS-specific
 
 伏草zing  VII Tools (Done)
+
+戮  Other things
