@@ -8,3 +8,13 @@
 《Reverse Engineering for Beginners》翻译
 
 已完成翻译 http://drops.wooyun.org/author/reverse-engineering  跟新
+
+＃0x01 成员担当
+
+糖果  IV JAVA
+
+左懶  VI OS-specific
+
+伏草zing  VII Tools (Done)
+
+戮  Other things
