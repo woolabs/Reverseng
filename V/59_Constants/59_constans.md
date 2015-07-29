@@ -16,7 +16,7 @@ var int h0 := 0x67452301
 var int h2 := 0x98BADCFE
 var int h3 := 0x10325476
 
-如果你在代码中某行发现这四个常量，那么极有可能这个函数与MD5有关。
+如果你在代码中某行发现这四个常量，那么极有可能该处函数与MD5有关。
 
 另一个有关CRC16/CRC32算法的例子，通常使用预先计算好的表来计算：
 
@@ -36,7 +36,7 @@ MIDI文件的开始有"MThd"标志。如果我们有一个使用MIDI文件的程
 
 可以这样实现：
 
-(buf指向文件加载到内存的开始处)
+(buf指向内存文件加载的开始处)
 
 ```
 cmp [buf], 0x6468544D ; "MThd"
@@ -50,9 +50,9 @@ cmp [buf], 0x6468544D ; "MThd"
 
 ####59.1.1 DHCP
 
-这对于网络协议也同样适用。举个例子，DHCP协议网络包包含了称为所谓的magic cookie：0x6353826。任何生成DHCP包的代码在某处一定将这个常量嵌入了包中。我们在代码中发现它的地方可能就是执行这些操作的位置，或者不仅是如此。任何接收DHCP的包都会检查这个magic cookie，比对是否相同。
+上面的方法对于网络协议也同样适用。举个例子，DHCP协议网络包包含了magic cookie：0x6353826。任何生成DHCP包的代码在某处一定将这个常量嵌入了包中。它在代码中出现的地方可能就与执行这些操作有关，或者不仅是如此。任何接收DHCP的包都会检查这个magic cookie，比对是否相同。
 
-举个例子，我们使用Windows 7 x64的dhcpcore.dll文件搜索这个常量。我们发现了两处：看上去这个常量在两个函数中使用，名为DhcpExtractOptionsForValidation()和 、DhcpExtractFullOptions():
+举个例子，我们在Windows 7 x64的dhcpcore.dll文件中搜索这个常量。找到两处：看上去这个常量在名为DhcpExtractOptionsForValidation()和 DhcpExtractFullOptions()函数中使用:
 
 ```
 .rdata:000007FF6483CBE8 dword_7FF6483CBE8 dd 63538263h ; DATA XREF: ⤦ 
@@ -60,7 +60,7 @@ cmp [buf], 0x6468544D ; "MThd"
 	DhcpExtractFullOptions+97
 	```
 
-下面是这些常量被获取的地址：
+下面是常量被引用的地址：
 ```
 .text:000007FF6480875F  mov	eax, [rsi].text:000007FF64808761  cmp	eax, cs:dword_7FF6483CBE8.text:000007FF64808767  jnz	loc_7FF64817179```
 
@@ -68,4 +68,4 @@ cmp [buf], 0x6468544D ; "MThd"
 ```
 .text:000007FF648082C7  mov	eax, [r12].text:000007FF648082CB  cmp	eax, cs:dword_7FF6483CBEC.text:000007FF648082D1  jnz	loc_7FF648173AF```
 ###59.2 搜索常量
-在IDA中很容易：ALT-B或者ALT-I。在大量文件中或者在不可执行文件中搜索常量时，我会使用自己编写一个叫[binary grep](http://go.yurichev.com/17017)的小工具。
+在IDA中很容易：使用ALT-B或者ALT-I。如果是在大量文件或者在不可执行文件中搜索常量，我会使用自己编写一个叫[binary grep](http://go.yurichev.com/17017)的小工具。

@@ -18,14 +18,14 @@
 
 如果我们在谈论电子游戏，并且对里面的事件的随机性感兴趣，那么我们可以查找rand()函数或者类似函数(比如马特赛特旋转演算法)，然后定位调用这些函数的地方，更重要的是，函数执行结果如何被使用。
 
-但如果不是一个游戏，并且仍然使用了rand{}函数，找出原因也很有意思。这里有一些关于在数据压缩算法中意外出现rand()函数调用的例子(模仿加密)：[blog.yurichev.com](blog.yurichev.com)
+但如果不是一个游戏，并且仍然使用了rand()函数，找出原因也很有意思。这里有一些关于在数据压缩算法中意外出现rand()函数调用的例子(模仿加密)：[blog.yurichev.com](blog.yurichev.com)
 
 
 ###56.1 Windows API中常用的函数
 
 下面这些函数可能会被导入。值得注意的是并不是每个函数都在代码中使用。许多函数可能被库函数和CRT代码调用。
 
-*	注册访问(advapi32.dll):RegEnumKeyEx, RegEnumValue, RegGetValue7, RegOpenKeyEx, RegQueryVal- ueEx
+*	注册表访问(advapi32.dll):RegEnumKeyEx, RegEnumValue, RegGetValue7, RegOpenKeyEx, RegQueryValueEx
 *	.ini-file访问(kernel32.dll): GetPrivateProfileString
 *	资源访问(68.2.8): (user32.dll): LoadMen
 *	TCP/IP网络(ws2_32.dll): WSARecv, WSASend
