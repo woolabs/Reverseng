@@ -1,81 +1,59 @@
-# Reverseng
+# Reverse engineering for beginners
 
-#0x00 说明
+# 说明
 
-该项目为某同性交友团体翻译某本bl文的项目地址，异性恋请勿点击
+该项目为某同性交友团体翻译某本bl文的项目地址，异性恋请勿[点击](index.md)
 
-《Reverse Engineering for Beginners》翻译
+# 源起
 
-已完成翻译 http://drops.wooyun.org/author/reverse-engineering  跟新
+两年前乌云知识库的 @瞌睡龙 菊苣发起对《Reverse engineering for beginners》本书的翻译项目，但是后期对这本书都没怎么做过修缮工作，以至于两年间Dennis Yurichev对这本书的调整修改都得不到更新。而且乌云译版里面还有着不少语句不通，格式混乱的瑕疵。作为之前参加过这项翻译工作实在不忍心看着这么好的逆向书在中国的技术社区上被埋没。
 
-＃0x01 成员担当
+恰巧在前几天在Dennis Yurichev菊苣的[主页](http://beginners.re/)上看到《reverse engineering for beginners》的韩语版已经出版发售。而相比之下这本书在中国的技术社区上却显得很冷清，我尝试搜了一下，目前还没找到乌云译版以外的翻译版本。中文翻译版可以在Dennis Yurichev的blog看找到链接http://yurichev.com/blog/2015-aug-20/。不过Dennis Yurichev的感谢列表说antiy也有一份Chinese的翻译版本，但是我没找到，如果有小伙伴知道的麻烦告诉我一声，谢谢: )
 
-糖果  IV JAVA
+![](http://static.wooyun.org/upload/image/201605/2016052513120168158.png)
 
-左懶  VI OS-specific
+我目前看过的逆向书籍不多，但是对比一下国内看雪社区的《加密与解密》，《reverse engineering for beginners》还是更适合作为逆向入门书籍，而且里面覆盖的范围更广，包括了x86/x64，arm两三种CPU的指令集，而且囊括了Linux和Windows的OS hack等内容，各种逆向工具也都介绍了一番。所以逆向方面我挺推荐这本书作为入门读物的。
 
-伏草zing  VII Tools (Done)
+# 修缮计划
 
-戮  Other things
+1. 对每个章节都review并修缮，把语病，格式混乱等问题给解决了。
+2. 里面大量的术语翻译不一致，格式不一致，这方面也要做改善。
+3. 因为这期间作者对原版调整了很多，有不少章节缺漏或被删，分章情况也大不相同，所以需要继续完善跟原版的衔接工作。
+4. 迁移到gitbook和看云上，并在乌云drops上开一个专题连载这本书，提供一个更好的阅读体验。
+5. 因为乌云主分支的管理员比较少上线，所以先在我的github分支上做修缮工作，之后任务差不多了再归并到主分支上。
 
-#0x02 目录
+# 任务分配计划
 
-- [CPU简介](Chapter-01/Chapter-1.md)
-- [Hello,world!](Chapter-02/Chapter-2.md)
-- [函数的序幕](Chapter-03/Chapter-3.md)
-- [栈](Chapter-04/Chapter-4.md)
-- [printf()与参数处理](Chapter-05/Chapter-5.md)
-- [scanf()](Chapter-06/Chapter-6.md)
-- [访问传递参数](Chapter-07/Chapter-7.md)
-- [一个或者多个字的返回值](Chapter-08/Chapter-8.md)
-- [指针](Chapter-09/Chapter-9.md)
-- [条件跳转](Chapter-10/Chapter-10.md)
-- [选择结构switch()/case/default](Chapter-11/Chapter-11.md)
-- [循环结构](Chapter-12/Chapter-12.md)
-- [strlen()](Chapter-13/Chapter-13.md)
-- [除法](Chapter-14/Chapter-14.md)
-- [用FPU工作](Chapter-15/Chapter-15.md)
-- [数组](Chapter-16/Chapter-16.md)
-- [位域](Chapter-17/Chapter-17.md)
-- [结构体](Chapter-18/Chapter-18.md)
-- [联合体](Chapter-19/Chapter-19.md)
-- [函数指针](Chapter-20/Chapter-20.md)
-- [在32位环境中的64位值](Chapter-21/Chapter-21.md)
-- [SIMD](Chapter-22/Chapter-22.md)
-- [64位化](Chapter-23/Chapter-23.md)
-- [使用x64下的SIMD来处理浮点数](Chapter-24/Chapter-24.md)
-- [温度转换](Chapter-25/Chapter-25.md)
-- [C99的限制](Chapter-26/Chapter-26.md)
-- [内联函数](Chapter-27/Chapter-27.md)
-- [处理不当的反汇编代码](Chapter-28/Chapter-28.md)
-- [花指令](Chapter-29/Chapter-29.md)
-- [16位Windows](Chapter-30/Chapter-30.md)
-- [类](Chapter-31/Chapter-31.md)
-- [ostream](Chapter-32/Chapter-32.md)
-- [STL](Chapter-33/Chapter-33.md)
+- 统一化翻译术语和格式。
+- 目录调整，将每章章节都和原版进行归并。
+- 补全和删除掉与原版不符合的章节，之前翻译的时候是800多页，现在已经1300多页。
+- 文章校验工作，最好每章都有人可以帮忙维护校对。
+- gitbook上电子书的建设和维护。
+- 看云上电子书的建设和维护。
+- 乌云drops上电子书的建设和维护。
 
-以下链接需要修复，请自行查看文件夹对应内容
-- [Java](Chapter-54/Chapter-54.md)
-- [MicrosoftVisualC++](Chapter-55/Chapter-55.md)
-- [communication_with_the_outer_world_(win32)](Chapter-56/Chapter-56.md)
-- [text_strings](Chapter-57/Chapter-57.md)
-- [call_to_assert](Chapter-58/Chapter-58.md)
-- [constans](Chapter-59/Chapter-59.md)
-- [finding_the_right_instructions](Chapter-60/Chapter-60.md)
-- [xor_instructions](Chapter-61/Chapter-61.md)
-- [using_magic_numbers_while_tracing](Chapter-62/Chapter-62.md)
-- [general_idea](Chapter-63/Chapter-63.md)
-- [ArgumentsPassingMethods](Chapter-64/Chapter-64.md)
-- [ThreadLocalStorage](Chapter-65/Chapter-65.md)
-- [SystemCalls](Chapter-66/Chapter-66.md)
-- [Linux](Chapter-67/Chapter-67.md)
-- [Windows-NT](Chapter-68/Chapter-68.md)
-- [Disassembler](Chapter-69/Chapter-69.md)
-- [Debugger](Chapter-70/Chapter-70.md)
-- [SystemCallTracing](Chapter-71/Chapter-71.md)
-- [Decompilers](Chapter-72/Chapter-72.md)
-- [OtherTools](Chapter-73/Chapter-73.md)
-- [Primitive XOR-encryption](Chapter-84/Chapter-84.md)
-- [Millenium game save file](Chapter-85/Chapter-85.md)
-- [Oracle RDBMS SYM-files](Chapter-86/Chapter-86.md)
-- [Oracle RDBMS MSB-files](Chapter-87/Chapter-87.md)
+# 贡献名单
+
+## 第一期的翻译贡献人员
+
+瞌睡龙、糖果、blast、magix526、Larryxi、左懒、DM_、Zing
+
+如有缺漏请通知我一声。谢谢！
+
+## 修缮工作的贡献人员
+
+# Copyright
+
+原书版权归Dennis Yurichev作者所有，翻译解释权归乌云社区所有。
+
+# 最后
+
+最后，我在乌云zone上面发布了一个悬赏贴，里面就悬赏给第一个contributor了：）
+
+http://zone.wooyun.org/content/27463
+
+希望有兴趣的同学一起帮忙完善这本书吧！
+
+- 原版：https://github.com/dennis714/RE-for-beginners
+- 乌云主分支：https://github.com/woolabs/Reverseng
+- 我的github上面的分支：https://github.com/veficos/reverse-engineering-for-beginners
