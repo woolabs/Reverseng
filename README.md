@@ -66,3 +66,7 @@ http://zone.wooyun.org/content/27463
 - 我的github上面的分支：https://github.com/veficos/reverse-engineering-for-beginners
 
 因为乌云主分支的管理员比较少上线，所以跟@瞌睡龙菊苣商量后，先在我的github分支上做修缮工作，之后任务差不多了再归并到主分支上。
+
+有兴趣的同学也可以加我的QQ：736809745。
+
+无关翻译工作的，闲聊，技术交流都可以：）
