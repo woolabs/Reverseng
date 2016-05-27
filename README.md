@@ -53,7 +53,7 @@ Dennis Yurichev在感谢列表上antiy公司也有一份Chinese的翻译版本�
 
 原书版权归Dennis Yurichev作者所有，翻译解释权归乌云社区（贡献了第一期的翻译）和所有参加过翻译的小伙伴所有。
 
-LICENSE请查看：[LICENSE.txt][LICENSE.txt]！
+LICENSE请查看：[LICENSE.txt](LICENSE.txt)
 
 这是一个公益项目！
 这是一个公益项目！
