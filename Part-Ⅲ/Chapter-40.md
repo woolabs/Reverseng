@@ -1,0 +1,2 @@
+#
+# Duff’s device
