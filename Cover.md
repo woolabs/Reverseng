@@ -1,8 +1,7 @@
-<center>给初学者的逆向工程指南
+<center>逆向工程入门指南
 =
 </center>
-<center>Reverse Engineering for Beginners
-Dennis</center>
+<center>Reverse Engineering for Beginners</center>
 
 ![](img/cover.png)
 
