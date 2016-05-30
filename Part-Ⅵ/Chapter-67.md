@@ -1,9 +1,9 @@
-# 第六十七章 
+# 第六十七章
 # Linux
 
 ## 67.1 位置无关代码
 
-在分析Linux共享库的时候(.so)的时候，可能会经常看到类似下面的代码：
+在分析Linux共享库(.so)的时候的时候，可能会经常看到类似下面的代码：
 
 Listing 67.1: libc-2.17.so x86
 
@@ -35,9 +35,9 @@ Listing 67.1: libc-2.17.so x86
 .text:00057A15     call __assert_fail
 ```
 
-在每个函数开始处，所有指向字符串的指针都需要通过EBX和一些常量值来修正地址。这就是所谓的PIC（位置无关代码），它的目的是让这段代码即使随机地放在内存中某个位置都能正确地执行。这也是为什么不能使用绝对地址的原因。
+所有指向字符串的指针都需要通过在每个函数开始出计算的EBX值和一些常量值来修正地址。这就是所谓的PIC（位置无关代码），它的目的是让这段代码即使放在内存中任何随机位置都能正确地执行。这也是为什么不能使用绝对地址的原因。
 
-PIC（位置无关代码）对于早期的操作系统和现在那些没有虚拟内存支持的嵌入式系统来说至关重要（所有进程都放在同一个连续的内存块）。此外，它还用于*NIX系统的共享库。这样共享库只需要加载一次到内存之后就可以让所有需要的进程使用，而且这些进程可以把同一个共享库映射到各自不同的内存地址上。这也是为什么共享库不使用绝对地址也能够正常地工作。
+PIC（位置无关代码）对于早期的操作系统和现在那些没有虚拟内存支持的嵌入式系统来说至关重要（所有进程都放在同一个连续的内存块）。此外，它还用于*NIX系统的共享库。这样共享库只需要加载一次到内存之后就可以让所有需要的进程使用。而且这些进程可以把同一个共享库映射到各自不同的内存地址上。这也是为什么共享库不使用绝对地址也能够正常地工作的原因。
 
 让我们做一个简单的实验：
 
@@ -96,7 +96,7 @@ gcc -fPIC -shared -O3 -o 1.so 1.c
 .text:000005B9 f1 endp
 ```
 
-如上所示：每个函数执行时都会矫正“returning %d\n”和global_variable的地址。__x86_get_pc_thunk_bx()函数通过EBX返回一个指向自身的指针（返回的是0x57C）。这是一种获取程序计数器（EIP）的简单方法。0x1A84常量是这个函数开始处到（Global Offset Table Procedure Linkage Table(GOT PLT)）它们之间的距离差。IDA会把这些偏移处理成更容易理解后再显示出来，所以实际上的代码是：
+如上所示：每个函数执行时都会修正指向“returning %d\n”和global_variable的指针。__x86_get_pc_thunk_bx()函数自身调用后在EBX返回一个指针（这里是0x57C）。这是一种获取程序计数器（EIP）的简单方法。0x1A84常量是这个函数开始处到 Global Offset Table Procedure Linkage Table(GOT PLT) 它们之间的距离差。IDA会把这些偏移处理成更容易理解后再显示出来，所以实际上的代码是：
 
 ```
 .text:00000577 call __x86_get_pc_thunk_bx
@@ -137,7 +137,7 @@ IDA会简化了反汇编代码，造成我们无法看到使用RIP相对寻址�
 
 ### 67.1.1 Windows
 
-Windows的DLL并没有使用PIC机制。如果Windows加载器需加载DLL到另外一个基地址，它需要把DLL在内存中的“重定位段”（在固定的位置）里所有地址都调整为正确的。这意味着多个Windows进程不能在不同进程内存块的不同地址共享一份DLL，因为每个实例加载在内存后只固定在这些地址工作。
+Windows的DLL并没有使用PIC机制。如果Windows加载器需加载DLL到另外一个基地址，它会在内存中（在固定的位置）对DLL "打补丁" 来将所有地址都调整为正确的。这意味着多个Windows进程不能在不同进程内存块的不同地址共享一份DLL，因为每个实例加载在内存后只固定在这些地址工作。
 
 ## 67.2 *LD_PRELOAD* hack in Linux
 
@@ -156,7 +156,7 @@ read(3, "416166.86 414629.38\n", 2047) = 20
 ...
 ```
 
-/proc/uptime并不是存放在磁盘的真实文件。而是由Linux Kernel产生的一个虚拟的文件。它有两个数值：
+/proc/uptime并不是存放在磁盘的真实文件。而是由Linux Kernel 动态生成内容的一个虚拟的文件。它有两个数值：
 
 ```
 $ cat /proc/uptime
@@ -253,6 +253,8 @@ ssize_t read(int fd, void *buf, size_t count)
 
 ```
 
+[源代码](https://github.com/dennis714/RE-for-beginners/blob/master/OS/LD_PRELOAD/fool_uptime.c)
+
 把它编译成动态链接库：
 ```
 gcc -fpic -shared -Wall -o fool_uptime.so fool_uptime.c -ldl
@@ -278,3 +280,4 @@ LD_PRELOAD=`pwd`/fool_uptime.so uptime
 com/17043)
 - [KevinPulo—FunwithLD_PRELOAD.Alotofexamplesandideas.](http://go.yurichev.com/17145)
 - [File functions interception for compression/decompression files on fly (zlibc).](http://go.yurichev.com/17146)
+
