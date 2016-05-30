@@ -35,7 +35,7 @@
 * [28](Part-Ⅰ/Chapter-28.md)
 * [29](Part-Ⅰ/Chapter-29.md)
 * [30-34](Part-Ⅱ)
-* [36,38-42,45-48,52章](Part-Ⅲ)
+* [38-42,45-48,52章](Part-Ⅲ)
 * [43.1 / 43.1.2](Part-Ⅲ/Chapter-43.md)
 * [51.2](Part-Ⅲ/Chapter-51.md)
 * [59.1.1](Part-Ⅴ/Chapter-59.md)
