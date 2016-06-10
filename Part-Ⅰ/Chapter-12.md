@@ -152,15 +152,15 @@ _main   ENDP
 
 第三个条件跳转：fig. 12.3.我们可以发现14当CF=0 (carry flag)时，JNB将被触发。在该例中条件不为真，所以第三个printf()将被执行。
 
-![](pic/C12-1.png)
+![](img/C12-1.png)
 
 Figure 12.1: OllyDbg: f_unsigned(): 第一个条件跳转
 
-![](pic/C12-2.png)
+![](img/C12-2.png)
 
 Figure 12.2: OllyDbg: f_unsigned(): 第二个条件跳转
 
-![](pic/C12-3.png)
+![](img/C12-3.png)
 
 Figure 12.3: OllyDbg: f_unsigned(): 第三个条件跳转
 
@@ -174,15 +174,15 @@ Figure 12.3: OllyDbg: f_unsigned(): 第三个条件跳转
 
 第三个条件跳转将不会被触发，因为仅有SF=OF，该例中不为真: fig. 12.6.
 
-![](pic/C12-4.png)
+![](img/C12-4.png)
 
 Figure 12.4: OllyDbg: f_signed(): 第一个条件跳转
 
-![](pic/C12-5.png)
+![](img/C12-5.png)
 
 Figure 12.5: OllyDbg: f_signed(): 第二个条件跳转
 
-![](pic/C12-6.png)
+![](img/C12-6.png)
 
 Figure 12.6: OllyDbg: f_signed(): 第三个条件跳转
 
@@ -208,11 +208,11 @@ Figure 12.6: OllyDbg: f_signed(): 第三个条件跳转
 
 如果忘了这些跳转，printf()可能会被多次调用，这种行为可能是我们不需要的。
 
-![](pic/C12-7.png)
+![](img/C12-7.png)
 
 Figure 12.7: Hiew: f_unsigned() 函数
 
-![](pic/C12-8.png)
+![](img/C12-8.png)
 
 Figure 12.8: Hiew:我们修改 f_unsigned() 函数
 

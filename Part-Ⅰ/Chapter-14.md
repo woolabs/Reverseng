@@ -205,15 +205,15 @@ main endp
 
 9是i的最后一个循环制，这也就是为什么JL在递增的最后不会触发，之后函数结束，如图14.3。
 
-![](pic/C14-1.png)
+![](img/C14-1.png)
 
 图14.1： OllyDbg main（）开始
 
-![](pic/C14-2.png)
+![](img/C14-2.png)
 
 图14.2： OllyDbg： 循环体刚刚递增了i，现在i=6
 
-![](pic/C14-3.png)
+![](img/C14-3.png)
 
 图14.3： OllyDbg中ESI=10，循环终止
 
@@ -307,7 +307,7 @@ skipping this CALL 8D1000h=0x8d1000
 
 生成的代码可以在此使用：
 
-![](pic/C14-4.png)
+![](img/C14-4.png)
 
 图14.4： IDA加载了.idc-script之后的内容
 

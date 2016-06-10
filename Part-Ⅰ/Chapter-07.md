@@ -133,20 +133,20 @@ EBP的值减去4，结果放在EAX寄存器中。接着EAX寄存器的值被压�
 
 让我们来跟随到准备变量x的地址的位置。
 
-![](pic/C7-2.png)
+![](img/C7-2.png)
 
 图7.1 OllyDbg：计算局部变量的地址
 
 
 可以右击寄存器窗口的EAX，再点击"堆栈窗口中跟随"。这个地址会在堆栈窗口中显示。观察，这是局部栈中的一个变量。我在图中用红色箭头标出。这里是一些无用数据（0x77D478）。PUSH指令将会把这个栈元素的地址压入栈中。然后按F8直到scanf()函数执行完。在scanf()执行时，我们要在命令行窗口中输入，例如输入123。
 
-![](pic/C7-1.png)
+![](img/C7-1.png)
 
 图7.2 命令行输出
 
 scanf()在这里执行。
 
-![](pic/C7-3.png)
+![](img/C7-3.png)
 
 图7.3：OllyDbg：scanf()执行
 
@@ -154,7 +154,7 @@ scanf()在EAX中返回1，这意味着成功读入了一个值。现在我们关
 
 接下来，这个值从栈中复制到ECX寄存器中，然后传递给printf()。
 
-![](pic/C7-4.png)
+![](img/C7-4.png)
 
 图7.4：OllyDbg：准备把值传递给printf()
 
@@ -516,7 +516,7 @@ _x      DD      0aH
 
 到这里事情就变得简单了
 
-![](pic/C7-5.png)
+![](img/C7-5.png)
 
 表7.5 OllyDbg: scanf()执行后
 
@@ -530,7 +530,7 @@ _x      DD      0aH
 
 X变量地址是0xDC3390。在OllyDbg中我们看进程内存映射(Alt-M)，然后发现这个地址在PE文件.data结构处。
 
-![](pic/C7-6.png)
+![](img/C7-6.png)
 
 表7.6: OllyDbg 进程内存映射
 
@@ -861,11 +861,11 @@ JNE根据CMP的结果判断跳至哪，JNE表示(jump if Not Equal)
 
 这个非常的有用。可以这么说，逆向工程师很重要的一点就是缩小他所有的信息。
 
-![](pic/C7-7.png)
+![](img/C7-7.png)
 
 图7.7: IDA 图形模式
 
-![](pic/C7-8.png)
+![](img/C7-8.png)
 
 图7.8: Graph mode in IDA with 3 nodes folded
 
@@ -875,13 +875,13 @@ JNE根据CMP的结果判断跳至哪，JNE表示(jump if Not Equal)
 
 当本地变量地址被传递给scanf()时，这个变量还有一些垃圾数据。这里是0x4CD478:
 
-![](pic/C7-10.png)
+![](img/C7-10.png)
 
 图7.10 OllyDbg：传递变量地址给printf()
 
 当scanf()执行时，我在命令行窗口输入了一些不是数字的东西，像"asdasd".scanf()结束后eax变为了0.也就意味着有错误发生:
 
-![](pic/C7-11.png)
+![](img/C7-11.png)
 
 图7.11 OllyDbg：scanf() 返回错误
 
@@ -893,7 +893,7 @@ JNE根据CMP的结果判断跳至哪，JNE表示(jump if Not Equal)
 
 按下F9我们可以在窗口中看到:
 
-![](pic/C7-9.png)
+![](img/C7-9.png)
 
 图7.9
 
@@ -907,7 +907,7 @@ JNE根据CMP的结果判断跳至哪，JNE表示(jump if Not Equal)
 
 我们可以看到这个:
 
-![](pic/C7-12.png)
+![](img/C7-12.png)
 
 图7.12:main()函数
 
@@ -915,7 +915,7 @@ Hiew 找到 ASCIIZ 字符串并显示，引入的函数名字也同样显示。
 
 移动光标到地址 .00401027 (这里是 JNZ 指令, 我们需要绕过它), 按下 F3, 然后输入 “9090” (表示两个 NOP):
 
-![](pic/C7-13.png)
+![](img/C7-13.png)
 
 图7.13:Hiew 用两个NOP替换JNZ
 

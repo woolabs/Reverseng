@@ -265,5 +265,5 @@ Listing 36.1: MSVC 2010 x86
 By the way，这是一些函数式PL（Programming language，编程语言，LISP,
 Python, Lua等）编译器（其中大量使用递归）使用[tail call](https://en.wikipedia.org/wiki/Tail_call)的原因。
 
- [1]: pic/C36-2.png
- [2]: pic/C36-3.png
+ [1]: img/C36-2.png
+ [2]: img/C36-3.png

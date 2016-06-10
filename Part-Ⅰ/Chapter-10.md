@@ -75,23 +75,23 @@ _main   ENDP
 
 现在两个全局变量的值被加载到寄存器传递给printf(): fig. 10.4.
 
-![](pic/C10-1.png)
+![](img/C10-1.png)
 
 Figure 10.1: OllyDbg: 全局变量地址被传递进f1()
 
-![](pic/C10-2.png)
+![](img/C10-2.png)
 
 Figure 10.2: OllyDbg: f1()开始
 
-![](pic/C10-3.png)
+![](img/C10-3.png)
 
 Figure 10.3: OllyDbg: f1()完成
 
-![](pic/C10-4.png)
+![](img/C10-4.png)
 
 Figure 10.4: OllyDbg: 全局变量被传递进printf()
 
-![](pic/C10-5.png)
+![](img/C10-5.png)
 
 Figure 10.5: OllyDbg: memory map
 
@@ -149,15 +149,15 @@ f1()开始的时候，随机栈地址为0x35FCF4和0x35FCF8 fig. 10.7.
 
 f1()完成时结果0xDB18和0x243存放在地址0x35FCF4和0x35FCF8。
 
-![](pic/C10-6.png)
+![](img/C10-6.png)
 
 Figure 10.6: OllyDbg: 局部变量地址被圧栈
 
-![](pic/C10-7.png)
+![](img/C10-7.png)
 
 Figure 10.7: OllyDbg: f1()starting
 
-![](pic/C10-8.png)
+![](img/C10-8.png)
 
 Figure 10.8: OllyDbg: f1()finished
 

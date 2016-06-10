@@ -155,15 +155,15 @@ Listing 20.2: MSVCR80.DLL
 
 第二次调用comp()—当前比较的值不相同：fig203。
 
-![](pic/C23-1.png)
+![](img/C23-1.png)
 
 Figure 20.1: OllyDbg: first call of comp()
 
-![](pic/C23-2.png)
+![](img/C23-2.png)
 
 Figure 20.2: OllyDbg: the code in qsort() right a_er comp() call
 
-![](pic/C23-3.png)
+![](img/C23-3.png)
 
 Figure 20.3: OllyDbg: second call of comp()
 
