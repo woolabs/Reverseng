@@ -21,9 +21,9 @@ int main()
 
 `cl 1.cpp /Fa1.asm`
  
-（/Fa 选项表示让编译器生产汇编列表文件）
-代码清单 3.1: MSVC 2010
+（/Fa 选项表示让编译器生产汇编代码文件）
 
+代码清单 3.1: MSVC 2010
 ```
 CONST   SEGMENT
 $SG3830 DB     'hello, world', 00H
@@ -445,7 +445,6 @@ Xcode 4.6.3不开启代码优化的情况下，会产生非常多冗余的代码
 开启`-O3`编译选项
 
 Listing 3.13: Optimizing Xcode 4.6.3 (LLVM) (ARM mode)
-
 ```
 __text:000028C4         _hello_world
 __text:000028C4 80 40 2D E9		STMFD   SP!, {R7,LR}
@@ -460,30 +459,29 @@ __text:000028E0 80 80 BD E8     LDMFD   SP!, {R7,PC}
 __cstring:00003F62 48 65 6C 6C +aHelloWorld_0    DCB "Hello world!", 0
 ```
 
-我们来说已经非常熟悉`STMFD`和`LDMFD`了。
+我们已经非常熟悉`STMFD`和`LDMFD`指令了，这里就跳过不讲。
 
-`MOV`指令就是将`0x1686`写入`R0`寄存器里。这个值也正是字串”Hello world！”的指针偏移。
+下一条，`MOV`指令就是将数字`0x1686`写入`R0`寄存器里。这个值是字符串”Hello world！”的指针偏移量。
 
-R7寄存器(在[App10]里这是个标准)是一个帧指针，我们继续。
+`R7`寄存器(在[App10]里这是个标准)是一个帧指针，在之后的章节我们会介绍它。
 
-`MOVT R0， #0`(`MOVe Top`)指令时向`R0`的高16位写入0。这是因为普通情况下MOV这条指令在ARM模式下，只对低16位进行操作。需要记住的是所有在ARM模式下的指令都被限定在32bits内。当然这个限制并不影响2个寄存器直接的操作。这也是`MOVT`这种写高16位(包含第16~31位)指令存在的意义。其实这样写的代码会感觉有点多余，因为`MOVS R0，#0x1686`这条指令也能把高16位清0。或许这就是相对于人脑来说编译器的不足。
+`MOVT R0， #0`(`MOVe Top`)指令时向寄存器`R0`的高16位写入0。这是因为在ARM模式下，`MOV`这条指令，只对低16位进行操作。记住！在ARM模式下，所有的指令都被限定在32位以内。当然这个限制并不影响，数据在2个寄存器之间的直接的转移。这也是`MOVT`这种向高16位(包含第16~31位)写入的附加指令存在的意义。但在这里它其实是多余的，因为`MOVS R0，#0x1686`这条指令也能把寄存器的高16位清0。这或许就是相对于人脑来说编译器的不足。
 
-`ADD R0，PC，R0`指令把R0寄存器的值与PC寄存器的值进行相加并且保存到R0寄存器里面，用来计算`"Hello world!"`这个字串的绝对地址。上面已经介绍过了，这是因为代码是浮动地址的，所以这个修正是有必要的。
+`ADD R0，PC，R0`指令把`PC`寄存器的值相到`R0`里，用来计算`"Hello world!"`字符串的绝对地址。这如我们所知的，这里采用浮动地址码，所以这个修正还是有必要的。
 
-BL指令用来调用`printf()`的替代函数`puts()`函数。
+`BL`指令调用了`puts()`函数，而不是`printf()`。
 
-GCC将printf（）函数替换成了puts()。因为printf()函数只有一个参数的时候跟puts()函数是类似的。printf()函数的字串参数里，没有以%开头的特殊控制符的时候，两个函数的功能是相似的。如果不是这样，这两个函数的功能会有所差别。
+GCC将第一个`printf()`函数替换成了`puts()`。因为`printf()`函数只有单一参数时，跟`puts()`函数是类似的。在大多数情况下，`printf()`的字符串参数里，没有以`%`开头的特殊控制符的时候，两个函数的会输出相同的结果。如果不是这样，这两个函数的功能会有所差别。
 
-为什么编译器会替换`printf()`到`puts()`呢？也许是因为`puts()`函数更快。`puts()`函数效率更快是因为它只是做了字串的标准输出(stdout)，而不需要将字符串的每一位与%相比较。
+为什么编译器会替换`printf()`为`puts()`呢？这或许是因为`puts()`更快一些。因为`puts()`只是做了字串的标准输出(`stdout`)，而不需要将字符串逐位与`%`相比较。
 
-下面，我们可以看到非常熟悉的`"MOV R0, #0"`指令，用来将`R0`寄存器设为0。
+下一条语句，我们可以看到了熟悉的`"MOV R0, #0"`指令，用来将`R0`寄存器设为0。
 
-### 3.4.4 开启代码优化的Xcode(LLVM)编译thumb-2模式
+### 3.4.4 开启代码优化的Xcode(LLVM)编译Thumb-2模式
 
 在默认情况下，Xcode4.6.3会生成如下的Thumb-2代码
 
-Listing 3.14: Optimizing Xcode 4.6.3 (LLVM) (Thumb-2 mode)
-
+代码清单 3.14: 带优化的 Xcode 4.6.3 (LLVM) (Thumb-2 模式)
 ```
 __text:00002B6C                _hello_world
 __text:00002B6C 80 B5          PUSH    {R7,LR}
@@ -500,60 +498,354 @@ __text:00002B80 80 BD          POP     {R7,PC}
 __cstring:00003E70 48 65 6C 6C 6F 20 +aHelloWorld DCB "Hello world!",0xA,0
 ```
 
-BL和BLX指令在thumb模式下情况需要我们回忆下刚才讲过的，它是由一对16-bit的指令来构成的。在thumb-2模式下这条指令跟thumb一样被编码成了32-bit指令。非常容易观察到的是，thumb-2的指令的机器码也是从0xFx或者0xEx的。对于thumb和thumb-2模式来说，在IDA的结果里机器码的位置和这里是交替交换的。对于ARM模式来说4个byte也是反向的，这是因为他们用了不同的字节序。所以我们可以知道，MOVW，MOVT.W和BLX这几个指令的开始都是0xFx。
+正如我们刚刚回忆过的，`BL`和`BLX`指令在Thumb模式下，被编码为一对16位的指令。在Thumb-2模式下这操作符些会被这样扩展，所以新的指令会被编码成32位的指令。很容易就能发现，Thumb-2的操作码总是以`0xFx`或`0xEx`开头。但是在IDA的反汇编代码里，操作符的位置被交换过了。对于ARM处理器来说，这是因为指令以以下方式编码：最后一个字节在最前面，接下来是第一个字符(在Thumb 和 Thumb-2模式里)，对于四个字节的操作符则是：首先是第四个字节，然后是第三个，接下来是第二个，最后才是第一个字节(这是由于不同的字节序)。
 
-在thumb-2指令里有一条是"MOVW R0, #0x13D8",它的作用是写数据到R0的低16位里面。
+下面是在IDA里，字节是如何排列的：
 
-`MOVT.W R0, #0`的作用类似与前面讲到的MOVT指令，但它可以工作在thumb-2模式下。
+* ARM 和 ARM64 模式: 4-3-2-1;
+* Thumb 模式: 2-1;
+* Thumb-2 模式里的一对16位指令 : 2-1-4-3.
 
-还有些跟上面不同的地方，比如BLX指令替代了上面用到的BL指令，这条指令不仅将控制puts()函数返回的地址放入了LR寄存器里，并且讲代码从thumb模式转换到了ARM模式（或者ARM转换到thumb（根据现有情况判断））。这条指令跳转到下面这样的位置（下面的代码是ARM编码模式）。
+所以我们能看出来，`MOVW`，`MOVT.W`和`BLX`这几个指令都是以`0xFx`开始。
 
+在Thumb-2指令里有一条是`MOVW R0, #0x13D8`,它的作用是将16位的值，写到`R0`的低16位里面，并将高位清零。
+
+`MOVT.W R0, #0`的作用类似与前面讲到的`MOVT`指令，但它工作在Thumb-2模式下。
+
+还有些其他的差异，比如`BLX`指令替代了上面用到的`BL`指令。这样做的区别在于：这条指令除了将`RA`存入到寄存器`LR`里，还将控制全交给`puts()`函数，并且处理器也从Thumb/Thumb-2模式转换到了ARM模式（或者相反）。这条指令放在这里，是因为跳转到了像下面这样的位置（下面的代码以ARM模式编码）。
 ```
-__symbolstub1:00003FEC              	_puts  ; CODE XREF: _hello_world+E
+__symbolstub1:00003FEC _puts  			; CODE XREF: _hello_world+E
 __symbolstub1:00003FEC 44 F0 9F E5  	LDR PC, =__imp__puts
 ```
 
-可能会有细心的读者要问了:为什么不直接跳转到puts()函数里面去？
+这本质上是个到`puts()`导入地址的转跳。
+
+可能会有细心的读者要问了:为什么不在需要的时候，直接调用`puts()`函数呢？
 
 因为那样做会浪费内存空间。
 
-很多程序都会使用额外的动态库(dynamic libraries)(Windows里面的DLL，还有\*NIX里面的.so，MAC OS X里面的.dylib),通常使用的库函数会被放入动态库中，当然也包括标准C函数puts()。
+大多数程序都会使用额外的动态库(dynamic libraries)(Windows里面的DLL，还有\*NIX里面的.so，MAC OS X里面的.dylib),经常使用的库函数会被放入动态库中，当然也包括标准C函数`puts()`。
 
 在可执行的二进制文件里(Windows的PE里的.exe文件，ELF和Mach-O文件)都会有输入表段。它是一个用来引入额外模块里模块名称和符号（函数或者全局变量）的列表。
 
-系统加载器（OS loader）会加载所有需要的模块，当在主模块里枚举输入符号的时候，会把每个符号正确的地址与相应的符号确立起来。
+系统加载器（OS loader）会加载所有需要的模块，当在主模块里枚举输入符号的时候，会确定每个符号真正地址。
 
-在我们的这个例子里，`__imp__puts`就是一个系统加载器加载额外模块的32位的地址值。LDR指令只需要把这个值加载到PC里面去，就可以控制程序流程到puts()函数里去。
+在我们的这个例子里，`__imp__puts`就是一个系统加载器储存附加模块真正地址的32位的变量。`LDR`指令把这个值从变量里读取出来，并写入到`PC`寄存器里，并将控制权交给那个地址。
 
-所以只需要在系统加载器里的时候，一次性的就能将每个符号所对应的地址确定下来，这是个提高效率的好方式。
+所以为了减少系统加载器完成这个过程所需的时间，最好将所有符号的地址一次性写到一个特定的地方。
 
-外加，我们前面也指出过，我们没办法只用一条指令并且不做内存操作的情况下就将一个32bit的值保存到寄存器里，ARM并不是唯一的模式的情况下，程序里去跳入动态库中的某个函数里，最好的办法就是这样做一些类似与上面这样单一指令的函数（称做thunk function），然后从thumb模式里也能去调用。
+另外，我们前面也指出过，我们没办法只用一条指令，并且在不访问内存的情况下，就将一个32位的值保存到寄存器里。因此，最好的办法就是，单独分出一个函数，用来在ARM模式下将控制权交给动态链接库，这样做一些类似与上面这样单一指令的函数（称做Thunk function），然后从Thumb模式里也能去调用。
 
-在上面的例子（ARM编译的那个例子）中BL指令也是跳转到了同一个thunk function里。尽管没有进行模式的转变（所以指令里不存在那个”X”）。
+在先前的例子中（以ARM模式编译的例子），`BL`指令也是跳转到了同一个Thunk function里。尽管没有进行模式的转变（所以指令里不存在那个”X”）。
 
 #### 关于形实转换函数
 
+形实转换函数很难理解，表面上看是因为它的具有误导性的名字。
 
-> ""
+理解它最简单的方法是把他看做一个适配器，或者将一种插口转换为另一种的转换器。举个例子，一个适配器允许一个英式的电源插头插入一个美式的插座，反之亦然。
 
+形实转换函数有时被称作封装器。
+
+以下是对该函数的一些描述：
+> P. Z. Ingerman说这个函数是"提供地址的一段代码"，他于1961年，发明了形实转换函数，并作为Algol-60 程序调用里，将实参转换为标准定义的一种方式。
+> 如果调用一个带有表达式形参的程序，编译器会生成一个形实转换函数来计算表达式的值，并将结果的地址放在某些标准位置上。
+> ...
+> Microsoft 和 IBM 都在他们的基于Intel的系统里面定义了一个“16-位的环境”(带有讨厌的段寄存器和64K的内存限制)和一个“32-位的环境”(带有平坦寻址和半实时的内存管理)。
+> 这两种环境都能在相同的电脑和操作系统上运行(感谢我们在Microsoft世界里称之为WOW的东西，WOW代表着Windows On Windows)。
+> MS 和 IBM都决定将16位到32位和相反的转换过程称为一个"thunk"；对于Windows 95来说，甚至有个叫做“Thunk编译器”的工具——THUNK.EXE。
 
 ([The Jargon File](go.yurichev.com/17362))
+
 ### 3.4.5 ARM64
 
 **GCC**
 
+让我们在ARM64 上用GCC 4.8.1编译一下这个程序。
+
+代码清单 3.15:无优化的 GCC 4.8.1 + objdump
+```
+1	0000000000400590 <main>:
+2 	400590: 	a9bf7bfd 	stp 	x29, x30, [sp,#-16]!
+3 	400594: 	910003fd 	mov 	x29, sp
+4 	400598: 	90000000 	adrp 	x0, 400000 <_init-0x3b8>
+5 	40059c: 	91192000 	add 	x0, x0, #0x648
+6 	4005a0: 	97ffffa0 	bl 		400420 <puts@plt>
+7 	4005a4: 	52800000 	mov 	w0, #0x0 					// #0
+8 	4005a8: 	a8c17bfd 	ldp 	x29, x30, [sp],#16
+9 	4005ac: 	d65f03c0 	ret
+10
+11 	...
+12
+13 	Contents of section .rodata:
+14 	400640 01000200 00000000 48656c6c 6f210a00 ........Hello!..
+```
+
+
+
+
+
+
+
+![](pic/C3-2.png)
+
+
+
+
+代码清单 3.16: main() 返回uint64_t类型的值
+```
+#include <stdio.h>
+#include <stdint.h>
+
+uint64_t main()
+{
+	printf ("Hello!\n");
+	return 0;
+}
+```
+
+结果是相似的，下面是在那一行，`MOV`看起来是怎么样的：		
+
+代码清单 3.17: 无优化的 GCC 4.8.1 + objdump
+```
+4005a4: 	d2800000 	mov 	x0, #0x0 		// #0
+```
+
 ## 3.5 MIPS
-### 3.5.1
 
-### 3.5.2
+### 3.5.1 关于全局指针
 
-### 3.5.3
+`LDA`负载对然后恢复了`X29`和 `X30`寄存器。
 
 
-### 3.5.4
 
-### 3.5.5
 
-## 3.5.5
+### 3.5.2 带优化的GCC
 
-## 3.7
+让我们看看下面这个例子，他说明了全局指针的概念：
+
+代码清单 3.18: 带优化的 GCC 4.4.5 (汇编输出)
+```
+1 	$LC0:
+2 	; \000 is zero byte in octal base:
+3 			.ascii "Hello, world!\012\000"
+4 	main:
+5 	; function prologue.
+6 	; set the GP:
+7 			lui 	$28,%hi(__gnu_local_gp)
+8 			addiu 	$sp,$sp,-32
+9 			addiu 	$28,$28,%lo(__gnu_local_gp)
+10 	; save the RA to the local stack:
+11 			sw 		$31,28($sp)
+12 	; load the address of the puts() function from the GP to $25:
+13 			lw 		$25,%call16(puts)($28)
+14 	; load the address of the text string to $4 ($a0):
+15 			lui 	$4,%hi($LC0)
+16 	; jump to puts(), saving the return address in the link register:
+17 			jalr 	$25
+18 			addiu $4,$4,%lo($LC0) 	; branch delay slot
+19 	; restore the RA:
+20 			lw 		$31,28($sp)
+21 	; copy 0 from $zero to $v0:
+22 			move 	$2,$0
+23 	; return by jumping to the RA:
+24 			j 		$31
+25 	; function epilogue:
+26 			addiu 	$sp,$sp,32 		; branch delay slot
+```
+
+
+
+
+
+
+代码清单 3.19: 带优化的 GCC 4.4.5 (IDA)
+```
+1 	.text:00000000 	main:
+2 	.text:00000000
+3 	.text:00000000 	var_10 		= -0x10
+4 	.text:00000000 	var_4 		= -4
+5 	.text:00000000
+6 	; function prologue.
+7 	; set the GP:
+8 	.text:00000000 				lui 	$gp, (__gnu_local_gp >> 16)
+9 	.text:00000004 				addiu 	$sp, -0x20
+10 	.text:00000008 				la 		$gp, (__gnu_local_gp & 0xFFFF)
+11 	; save the RA to the local stack:
+12 	.text:0000000C 				sw 		$ra, 0x20+var_4($sp)
+13 	; save the GP to the local stack:
+14 	; for some reason, this instruction is missing in the GCC assembly output:
+15 	.text:00000010 				sw 		$gp, 0x20+var_10($sp)
+16 	; load the address of the puts() function from the GP to $t9:
+17 	.text:00000014 				lw 		$t9, (puts & 0xFFFF)($gp)
+18 	; form the address of the text string in $a0:
+19 	.text:00000018 				lui 	$a0, ($LC0 >> 16) 		# "Hello, world!"
+20 	; jump to puts(), saving the return address in the link register:
+21 	.text:0000001C 				jalr 	$t9
+22 	.text:00000020 				la 		$a0, ($LC0 & 0xFFFF) 	# "Hello, world!"
+23 	; restore the RA:
+24 	.text:00000024 				lw		$ra, 0x20+var_4($sp)
+25 	; copy 0 from $zero to $v0:
+26 	.text:00000028 				move 	$v0, $zero
+27 	; return by jumping to the RA:
+28 	.text:0000002C 				jr 		$ra
+29 	; function epilogue:
+30 	.text:00000030 				addiu 	$sp, 0x20
+```
+
+
+
+### 3.5.3 无优化的 GCC
+
+无优化的GCC会产生更冗长的代码：
+
+代码清单 3.20: 无优化的 GCC 4.4.5 (汇编输出)
+```
+1 	$LC0:
+2 			.ascii "Hello, world!\012\000"
+3 	main:
+4 	; function prologue.
+5 	; save the RA ($31) and FP in the stack:
+6 			addiu 	$sp,$sp,-32
+7 			sw 		$31,28($sp)
+8 			sw 		$fp,24($sp)
+9 	; set the FP (stack frame pointer):
+10 			move 	$fp,$sp
+11 	; set the GP:
+12 			lui 	$28,%hi(__gnu_local_gp)
+13 			addiu 	$28,$28,%lo(__gnu_local_gp)
+14 	; load the address of the text string:
+15 			lui 	$2,%hi($LC0)
+16 			addiu 	$4,$2,%lo($LC0)
+17 	; load the address of puts() using the GP:
+18 			lw 		$2,%call16(puts)($28)
+19 			nop
+20 	; call puts():
+21 			move 	$25,$2
+22 			jalr 	$25
+23 			nop 			; branch delay slot
+24
+25 	; restore the GP from the local stack:
+26 			lw 		$28,16($fp)
+27 	; set register $2 ($V0) to zero:
+28 			move 	$2,$0
+29 	; function epilogue.
+30 	; restore the SP:
+31 			move 	$sp,$fp
+32 	; restore the RA:
+33 			lw 		$31,28($sp)
+34 	; restore the FP:
+35 			lw 		$fp,24($sp)
+36 			addiu 	$sp,$sp,32
+37 	; jump to the RA:
+38 			j 		$31
+39 			nop 			; branch delay slot
+```
+
+
+代码清单 3.21: 无优化的 GCC 4.4.5 (IDA)
+```
+1 	.text:00000000 	main:
+2 	.text:00000000
+3 	.text:00000000 	var_10 			= -0x10
+4 	.text:00000000 	var_8 			= -8
+5 	.text:00000000 	var_4 			= -4
+6	.text:00000000
+7 	; function prologue.
+8 	; save the RA and FP in the stack:
+9 	.text:00000000 					addiu 	$sp, -0x20
+10 	.text:00000004 					sw 		$ra, 0x20+var_4($sp)
+11 	.text:00000008 					sw 		$fp, 0x20+var_8($sp)
+12 	; set the FP (stack frame pointer):
+13	.text:0000000C move $fp, $sp
+14 	; set the GP:
+15 	.text:00000010 					la 		$gp, __gnu_local_gp
+16 	.text:00000018 					sw 		$gp, 0x20+var_10($sp)
+17 	; load the address of the text string:
+18 	.text:0000001C 					lui 	$v0, (aHelloWorld >> 16) 			# "Hello, world!"
+19 	.text:00000020 					addiu 	$a0, $v0, (aHelloWorld & 0xFFFF) 	# "Hello, world!"
+20 	; load the address of puts() using the GP:
+21 	.text:00000024 					lw 		$v0, (puts & 0xFFFF)($gp)
+22 	.text:00000028 					or 		$at, $zero 	; NOP
+23 	; call puts():
+24 	.text:0000002C 					move 	$t9, $v0
+25 	.text:00000030 					jalr 	$t9
+26	.text:00000034 					or 		$at, $zero ; NOP
+27 	; restore the GP from local stack:
+28 	.text:00000038 					lw 		$gp, 0x20+var_10($fp)
+29 	; set register $2 ($V0) to zero:
+30 	.text:0000003C 					move 	$v0, $zero
+31 	; function epilogue.
+32 	; restore the SP:
+33 	.text:00000040 					move 	$sp, $fp
+34 	; restore the RA:
+35 	.text:00000044 					lw 		$ra, 0x20+var_4($sp)
+36 	; restore the FP:
+37 	.text:00000048 					lw 		$fp, 0x20+var_8($sp)
+38 	.text:0000004C 					addiu 	$sp, 0x20
+39 	; jump to the RA:
+40 	.text:00000050 					jr 		$ra
+41 	.text:00000054 					or 		$at, $zero ; NOP
+```
+
+
+### 3.5.4 堆栈结构在本例里面的作用
+
+文本字符串的地址是通过寄存器传递的。那为什么要设置一个局部堆栈呢？这样做的原因是寄存器`RA`和`GP`的值必须被储存在某个地方(因为`printf()`被调用了)，局部堆栈就是用于这个目的的。如果这是个末端函数，那么有可能除去他的函数开始和函数结尾，例如:2.3
+
+### 3.5.5 带优化的 GCC:把它加载到GDB
+
+代码清单 3.22:  GDB session 的例子
+```
+root@debian-mips:~# gcc hw.c -O3 -o hw
+root@debian-mips:~# gdb hw
+GNU gdb (GDB) 7.0.1-debian
+Copyright (C) 2009 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law. Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "mips-linux-gnu".
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>...
+Reading symbols from /root/hw...(no debugging symbols found)...done.
+(gdb) b main
+Breakpoint 1 at 0x400654
+(gdb) run
+Starting program: /root/hw
+Breakpoint 1, 0x00400654 in main ()
+(gdb) set step-mode on
+(gdb) disas
+Dump of assembler code for function main:
+0x00400640 <main+0>: 	lui 	gp,0x42
+0x00400644 <main+4>: 	addiu 	sp,sp,-32
+0x00400648 <main+8>: 	addiu 	gp,gp,-30624
+0x0040064c <main+12>: 	sw 		ra,28(sp)
+0x00400650 <main+16>: 	sw 		gp,16(sp)
+0x00400654 <main+20>: 	lw 		t9,-32716(gp)
+0x00400658 <main+24>: 	lui 	a0,0x40
+0x0040065c <main+28>: 	jalr 	t9
+0x00400660 <main+32>: 	addiu 	a0,a0,2080
+0x00400664 <main+36>: 	lw 		ra,28(sp)
+0x00400668 <main+40>: 	move 	v0,zero
+0x0040066c <main+44>: 	jr 		ra
+0x00400670 <main+48>: 	addiu 	sp,sp,32
+End of assembler dump.
+(gdb) s
+0x00400658 in main ()
+(gdb) s
+0x0040065c in main ()
+(gdb) s
+0x2ab2de60 in printf () from /lib/libc.so.6
+(gdb) x/s $a0
+0x400820: "hello, world"
+(gdb)
+```
+
+### 3.5.5 小结
+
+x86/ARM 和 x64/ARM64 代码的主要区别是：x64中指向字符串的指针是64位长度的。现代CPU是64位的主要原因是:内存成本的下降和各种应用对64位的强烈需求。我们现在能够给电脑加很多内存，以至于远远超过了32位指针能够寻址的范围。正因如此，现在所有的指针都是64位的了。
+
+### 3.7 练习
+
+* http://challenges.re/48
+* http://challenges.re/49
