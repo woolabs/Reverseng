@@ -12,4 +12,4 @@
   
 # 参与过的翻译人员（如有遗漏烦请提醒一声）
 
--  瞌睡龙、糖果、blast、magix526、Larryxi、左懒、DM_、Zing、inkydragon、xqin
+-  瞌睡龙、路、糖果、blast、magix526、Larryxi、左懒、DM_、Zing、inkydragon、xqin
